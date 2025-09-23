@@ -2,22 +2,20 @@
 
 namespace App\Models;
 
-use App\Models\Traits\TenantScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Store extends Model
 {
-    use HasFactory, TenantScope;
+    use HasFactory;
+
+    protected $fillable = ['name', 'address', 'tenant_id'];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * Una tienda puede tener muchos usuarios (dueños, cajeros).
      */
-    protected $fillable = [
-        'name',
-        'address',
-        'tenant_id',
-    ];
+    public function users()
+    {
+        return $this->belongsToMany(User::class)->withPivot('role');
+    }
 }

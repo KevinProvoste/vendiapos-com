@@ -1,4 +1,5 @@
 <?php
+// File: vendiapos-com/app/Http/Controllers/Auth/RegisterController.php
 
 namespace App\Http\Controllers\Auth;
 
@@ -7,7 +8,6 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -29,7 +29,8 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/dashboard'; // Redireccionar al dashboard después del registro
+    // SOLUCIÓN: Cambiamos la redirección a la página de creación de tienda.
+    protected $redirectTo = '/stores/create';
 
     /**
      * Get a validator for an incoming registration request.
@@ -54,14 +55,11 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        // Generar un UUID para el tenant_id
-        $tenantId = (string) Str::uuid();
-
         return User::create([
-            'tenant_id' => $tenantId, // Asignar el tenant_id
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
     }
 }
+
