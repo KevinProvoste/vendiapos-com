@@ -12,10 +12,11 @@ trait TenantScope
      */
     public static function bootTenantScope()
     {
-        // Aplica un ámbito global para filtrar por tenant_id en todas las consultas.
         static::addGlobalScope('tenant_id', function (Builder $builder) {
-            // Obtiene el tenant_id del usuario autenticado y lo aplica al filtro.
-            $builder->where('tenant_id', Auth::user()->tenant_id);
+            // Solo aplica el filtro si hay un usuario autenticado y su tenant_id es accesible.
+            if (Auth::hasUser()) {
+                $builder->where('tenant_id', Auth::user()->tenant_id);
+            }
         });
     }
 }
